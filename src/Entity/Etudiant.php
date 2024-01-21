@@ -4,10 +4,8 @@ namespace App\Entity;
 
 use App\Repository\EtudiantRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\UX\Turbo\Attribute\Broadcast;
 
 #[ORM\Entity(repositoryClass: EtudiantRepository::class)]
-#[Broadcast]
 class Etudiant
 {
     #[ORM\Id]
@@ -20,6 +18,12 @@ class Etudiant
 
     #[ORM\Column(length: 50)]
     private ?string $prenom = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $adresse = null;
+
+    #[ORM\Column(length: 20)]
+    private ?string $cne = null;
 
     public function getId(): ?int
     {
@@ -46,6 +50,30 @@ class Etudiant
     public function setPrenom(string $prenom): static
     {
         $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(string $adresse): static
+    {
+        $this->adresse = $adresse;
+
+        return $this;
+    }
+
+    public function getCne(): ?string
+    {
+        return $this->cne;
+    }
+
+    public function setCne(string $cne): static
+    {
+        $this->cne = $cne;
 
         return $this;
     }
