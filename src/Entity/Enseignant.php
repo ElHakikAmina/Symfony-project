@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EnseignantRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
 
@@ -23,6 +25,14 @@ class Enseignant
 
     #[ORM\Column(length: 20)]
     private ?string $cni = null;
+
+    #[ORM\OneToMany(mappedBy: 'enseignant', targetEntity: Module::class)]
+    private Collection $yes;
+
+    public function __construct()
+    {
+        $this->yes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -61,6 +71,36 @@ class Enseignant
     public function setCni(string $cni): static
     {
         $this->cni = $cni;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Module>
+     */
+    public function getYes(): Collection
+    {
+        return $this->yes;
+    }
+
+    public function addYe(Module $ye): static
+    {
+        if (!$this->yes->contains($ye)) {
+            $this->yes->add($ye);
+            $ye->setEnseignant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeYe(Module $ye): static
+    {
+        if ($this->yes->removeElement($ye)) {
+            // set the owning side to null (unless already changed)
+            if ($ye->getEnseignant() === $this) {
+                $ye->setEnseignant(null);
+            }
+        }
 
         return $this;
     }

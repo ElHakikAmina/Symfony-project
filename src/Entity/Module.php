@@ -18,6 +18,18 @@ class Module
     #[ORM\Column(length: 50)]
     private ?string $nom = null;
 
+    #[ORM\ManyToOne(inversedBy: 'yes')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?enseignant $enseignant = null;
+
+    #[ORM\ManyToOne(inversedBy: 'semestre')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?filiere $filiere = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?semestre $semestre = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -31,6 +43,42 @@ class Module
     public function setNom(string $nom): static
     {
         $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getEnseignant(): ?enseignant
+    {
+        return $this->enseignant;
+    }
+
+    public function setEnseignant(?enseignant $enseignant): static
+    {
+        $this->enseignant = $enseignant;
+
+        return $this;
+    }
+
+    public function getFiliere(): ?filiere
+    {
+        return $this->filiere;
+    }
+
+    public function setFiliere(?filiere $filiere): static
+    {
+        $this->filiere = $filiere;
+
+        return $this;
+    }
+
+    public function getSemestre(): ?semestre
+    {
+        return $this->semestre;
+    }
+
+    public function setSemestre(?semestre $semestre): static
+    {
+        $this->semestre = $semestre;
 
         return $this;
     }
