@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ModuleRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
 
@@ -29,6 +31,14 @@ class Module
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?semestre $semestre = null;
+
+    #[ORM\OneToMany(mappedBy: 'module', targetEntity: Note::class)]
+    private Collection $no;
+
+    public function __construct()
+    {
+        $this->no = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -79,6 +89,36 @@ class Module
     public function setSemestre(?semestre $semestre): static
     {
         $this->semestre = $semestre;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Note>
+     */
+    public function getNo(): Collection
+    {
+        return $this->no;
+    }
+
+    public function addNo(Note $no): static
+    {
+        if (!$this->no->contains($no)) {
+            $this->no->add($no);
+            $no->setModule($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNo(Note $no): static
+    {
+        if ($this->no->removeElement($no)) {
+            // set the owning side to null (unless already changed)
+            if ($no->getModule() === $this) {
+                $no->setModule(null);
+            }
+        }
 
         return $this;
     }

@@ -21,6 +21,14 @@ class Note
     #[ORM\Column(length: 255)]
     private ?string $observation = null;
 
+    #[ORM\ManyToOne(inversedBy: 'no')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?etudiant $etudiant = null;
+
+    #[ORM\ManyToOne(inversedBy: 'no')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?module $module = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -46,6 +54,30 @@ class Note
     public function setObservation(string $observation): static
     {
         $this->observation = $observation;
+
+        return $this;
+    }
+
+    public function getEtudiant(): ?etudiant
+    {
+        return $this->etudiant;
+    }
+
+    public function setEtudiant(?etudiant $etudiant): static
+    {
+        $this->etudiant = $etudiant;
+
+        return $this;
+    }
+
+    public function getModule(): ?module
+    {
+        return $this->module;
+    }
+
+    public function setModule(?module $module): static
+    {
+        $this->module = $module;
 
         return $this;
     }
